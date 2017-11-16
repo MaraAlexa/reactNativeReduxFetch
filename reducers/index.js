@@ -1,4 +1,4 @@
-// the ROOT REducer
+// the ROOT Reducer
 import { combineReducers } from 'redux'
 
 // import all your reducers
