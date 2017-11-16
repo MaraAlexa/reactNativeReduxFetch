@@ -68,3 +68,5 @@ const styles = StyleSheet.create({
     color: 'white',
   }
 });
+
+// connect the app with the state and actions
