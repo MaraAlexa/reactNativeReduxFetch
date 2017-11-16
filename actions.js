@@ -2,8 +2,8 @@ import { FETCHING_PEOPLE, FETCHING_PEOPLE_SUCCESS, FETCHING_PEOPLE_FAILURE} from
 
 
 // the thunk function
-export function fetchPeopleFrom API(){
-  return (dispatch) {
+export function fetchPeopleFromAPI(){
+  return (dispatch) => {
     dispatch(getPeople())
     fetch('https://swapi.co/api/people/')
       .then(res => res.json())
@@ -20,8 +20,8 @@ function getPeople(){
 
 function getPeopleSuccess(data){
   return {
-    type: FETCHING_PEOPLE_SUCCESS
-    data
+    type: FETCHING_PEOPLE_SUCCESS,
+    data,
   }
 }
 

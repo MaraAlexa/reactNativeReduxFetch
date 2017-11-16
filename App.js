@@ -14,33 +14,46 @@ import {
 } from 'react-native';
 
 import { connect } from 'react-redux'
+import { fetchPeopleFromAPI } from './actions'
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+let styles
 
-export default class App extends Component<{}> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          REACT NATIVE REDUX APP!!!
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-        <TouchableHighlight style={styles.button}>
-          <Text style={styles.buttonText}>Fetch Data</Text>
-        </TouchableHighlight>
-      </View>
-    );
-  }
+const App = (props) => {
+  const {
+    container,
+    text,
+    button,
+    buttonText,
+    alignLeft,
+  } = styles
+
+  const { people, isFetching } = props.people;
+  console.log('people:', props.people)
+
+  return (
+    <View style={container}>
+      <Text>React Native Redux Fetching Data</Text>
+      <TouchableHighlight style={button} onPress={() => props.getPeople()}>
+        <Text style={buttonText}>Load People</Text>
+      </TouchableHighlight>
+      {
+        isFetching && <Text>Loading</Text>
+      }
+      {
+        people.length ? (
+          people.map((person, i) => {
+            return <View key={i}>
+              <Text>Name: {person.name}</Text>
+              <Text>Birth Year: {person.birth_year}</Text>
+            </View>
+          })
+        ) : null
+      }
+    </View>
+  )
 }
 
-const styles = StyleSheet.create({
+styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -52,11 +65,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+
   button: {
     backgroundColor: '#0b7eff',
     height: 60,
@@ -66,7 +75,20 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-  }
-});
+  },
+})
 
 // connect the app with the state and actions
+function mapStateToProps(state) {
+  return {
+    people: state.people
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getPeople: () => dispatch(fetchPeopleFromAPI())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
